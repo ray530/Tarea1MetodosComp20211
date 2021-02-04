@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 
 #Tiempo 
 
-t=np.linspace(1,10,50)
+t=np.linspace(0,10)
 
 #Velocidad análitica
 
