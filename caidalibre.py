@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 
 #Tiempo 
 
-t=np.linspace(0,10)
+t=np.linspace(0.0,30,200)
 
 
 ####################CASO IDEAL ############################
@@ -28,13 +28,35 @@ def posi(Y0_,V0_,t_):
  
 Videal=velo(V0,t)
 Yideal=posi(Y0,V0,t)
- 
+
+#Tiempo de vuelo ideal
+
+for i in range(len(t)):
+	g=9.81
+	if Yideal[i]<=0 and i!=0:
+		print("El tiempo de vuelo ideal es ",t[i])
+		if t[i+1]>=((V0*2)/g):
+			break
+
+
+
+
+
+
 plt.subplot(2,1,1)
 plt.plot(t,Videal,'ro')
+plt.xlim(0,10.5)
+plt.ylim(-50,50)
+plt.xlabel("Tiempo (s)")
+plt.ylabel("Velocidad (m/s)")
 plt.subplot(2,1,2)
 plt.plot(t,Yideal, 'g')
-plt.show()
-
+plt.xlim(0,10.5)
+plt.ylim(0,150)
+plt.xlabel("Tiempo (s)")
+plt.ylabel("Altura (m)")
+plt.savefig('Caso_ideal.png')
+plt.close()
 
 ################################CASO REAL ###############
 
@@ -58,16 +80,52 @@ def vel(gamma_,V0_,t_):
 		print("c3 debe estar entre -1 y 1")
 	return v
 	
+
+def pos(gamma_,Y0_,V0_,t_):
+	g=9.81
+	c1=1/gamma**2
+	c2=gamma*np.sqrt(g)
+	c3=(gamma*V0)/np.sqrt(g)
+	if c3 > -1.0 and c3 < 1.0:
+		c4=np.arctanh(c3)
+	else:
+		print("c3 debe estar entre -1 y 1")
+	y=Y0+c1*np.log(np.cosh(c4)/np.cosh(-c2*t+c4))
+	return y
+
+	
+
 V=vel(gamma,V0,t)
+Y=pos(gamma,Y0,V0,t)
+
+#Tiempo de vuelo real 
+for i in range(len(t)):
+	if Y[i]<=0 and i!=0:
+		print("El tiempo de vuelo con drag es ",t[i])
+		if t[i+1]>= t[i]:
+			break
+
 
 plt.figure
+plt.subplot(2,1,1)
 plt.plot(t,V)
-plt.show()
+plt.xlim(0,28)
+plt.ylim(-50,50)
+plt.xlabel("Tiempo (s)")
+plt.ylabel("Velocidad (m/s)")
+plt.subplot(2,1,2)
+plt.plot(t,Y)
+plt.xlim(0,28)
+plt.ylim(0,520)
+plt.xlabel("Tiempo (s)")
+plt.ylabel("Altura (m)")
+plt.savefig('Caso_real.png')
 
 
 	
 	
 	
+#print((1/gamma)**2,"c2= ",gamma*np.sqrt(9.81), "c3= ",(gamma*V0)/np.sqrt(9.81))
 
 
 
