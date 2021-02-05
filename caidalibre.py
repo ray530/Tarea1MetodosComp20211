@@ -67,7 +67,7 @@ A=np.pi*R**2
 rho=1.225 #Densidad del aire kg/m³
 m=1.0 #masa en kg
 gamma=np.sqrt((C_d*rho*A)/(2*m))
-
+g=9.81 
 
 def vel(gamma_,V0_,t_):
 	g=9.81 
@@ -91,7 +91,7 @@ def pos(gamma_,Y0_,V0_,t_):
 	else:
 		print("c3 debe estar entre -1 y 1")
 	y=Y0+c1*np.log(np.cosh(c4)/np.cosh(-c2*t+c4))
-	return y
+	return 2*y/g
 
 	
 
@@ -116,7 +116,7 @@ plt.ylabel("Velocidad (m/s)")
 plt.subplot(2,1,2)
 plt.plot(t,Y)
 plt.xlim(0,28)
-plt.ylim(0,520)
+plt.ylim(0,110)
 plt.xlabel("Tiempo (s)")
 plt.ylabel("Altura (m)")
 plt.savefig('Caso_real.png')
