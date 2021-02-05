@@ -116,7 +116,11 @@ plt.ylabel("Velocidad (m/s)")
 plt.subplot(2,1,2)
 plt.plot(t,Y)
 plt.xlim(0,28)
+<<<<<<< HEAD
+plt.ylim(0,120)
+=======
 plt.ylim(0,110)
+>>>>>>> 65bf8e911757672015f53d5c1dcc23b2e5e462d8
 plt.xlabel("Tiempo (s)")
 plt.ylabel("Altura (m)")
 plt.savefig('Caso_real.png')
@@ -124,9 +128,29 @@ plt.savefig('Caso_real.png')
 
 	
 	
+#################### Comportamiento de C respecto al tiempo de vuelo ####################################3
+
+#c es numero entre 0 y 1
+
+c=np.linspace(0.1, 1, 20)
+
+
+def gamma_c(c_):
+	R=0.05 #radio en m
+	A=np.pi*R**2
+	rho=1.225 #Densidad del aire kg/m³
+	m=1.0 #masa en kg
+	g=9.81
+	gama=np.sqrt((c*rho*A)/(2*m))
+	return gama
 	
 #print((1/gamma)**2,"c2= ",gamma*np.sqrt(9.81), "c3= ",(gamma*V0)/np.sqrt(9.81))
 
+Gamma=gamma_c(c)
+g=9.81
+c1=1/Gamma**2
+c2=Gamma*np.sqrt(g)
+c3=(Gamma*V0)/np.sqrt(g)
 
 
 
