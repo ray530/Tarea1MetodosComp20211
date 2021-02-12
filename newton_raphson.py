@@ -1,59 +1,52 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-#Primera raiz
-x1=1
+# definir función
 
-Max_iter=100
+def FUNC(x):
+	return 3*x**5+5*x**4-x**3
+	
+def DERIVATIVE(f,x,h):
+	d=0.01
+	if (h!=0):
+		d=(f(x+h)-f(x-h))/(2*h)
+	return d
 
-tol=0.001
+def NR(f,df,xn,error,it,precision=0.0001,iterations=1000):
+    h_ = 1.0e-4
+    while error > precision and it < iterations:  
+        try:   
+            xn1 = xn - f(xn)/df(f,xn,h_) 
+            error = np.abs((xn1-xn)/xn1)
+            #print(xn1)
+        except ZeroDivisionError:
+            print("Hay division por cero")   
+        xn = xn1
+        it += 1
+    return xn1
 
-for i in range(Max_iter):
-	xnew1=x1-(3*x1**5+5*x1**4-x1**3)/(15*x1**4+20*x1**3-3*x1**2)
-	if abs(xnew1-x1)< tol: break
-	x1=xnew1
-print("la primera raiz ",xnew1,  "a ", i,  " iteraciones")
+#Roots 
 
+C=100 #numero de puntos
+x=np.linspace(-10,10,C)
 
-#Segunda raiz
-x2=-10
-
-
-for i in range(Max_iter):
-	xnew2=x2-(3*x2**5+5*x2**4-x2**3)/(15*x2**4+20*x2**3-3*x2**2)
-	if abs(xnew2-x2)< tol: break
-	x2=xnew2
-print("la segunda raiz es ",xnew2,  "a ", i,  " iteraciones")
-
-#Tercera raiz
-x3=0.01
-
-
-for i in range(Max_iter):
-	xnew3=x3-(3*x3**5+5*x3**4-x3**3)/(15*x3**4+20*x3**3-3*x3**2)
-	if abs(xnew3-x3)<=tol/1000: break
-	x3=xnew3
-print("la tercera raiz es ",round(xnew3),  "a ", i,  " iteraciones")
+for i in x:
+	roots=[NR(FUNC,DERIVATIVE,i,100,1),0]
+	#print(roots, i )
+	xnew=[NR(FUNC,DERIVATIVE,-2,100,1),NR(FUNC,DERIVATIVE,-0.5,100,1),NR(FUNC,DERIVATIVE,2,100,1)]
+print("LAs raices son ",xnew)
+y_ceros=np.zeros(len(xnew))
 
 
 #Grafica 
 
-x=np.linspace(-10,10,100)
-def fun(x):
-	f=3*x**5+5*x**4-x**3
-	return f
-y=fun(x)
-
-
-roots=np.array([xnew1,xnew2,round(xnew3)])
-y_ceros=np.zeros(3)
-plt.plot(x,y,'b',label="Función")
-plt.scatter(roots,y_ceros,marker='o', color='red',label="RAICES")
+plt.plot(x,FUNC(x),'b',label="Función")
+plt.scatter(xnew,y_ceros,marker='o', color='red',label="RAICES")
 plt.xlim(-2,2)
 plt.ylim(-4,4)
 plt.legend()
 plt.xlabel("X")
-plt.ylabel("Y")
+plt.ylabel("F(X)")
 plt.grid()
 plt.savefig("Grafica_Newton_Raphson.png")
 
